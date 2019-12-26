@@ -985,7 +985,12 @@ _zip_d2u_time(zip_uint16_t dtime, zip_uint16_t ddate) {
     memset(&tm, 0, sizeof(tm));
 
     /* let mktime decide if DST is in effect */
+
+#ifdef ENABLE_LOCALTIME
     tm.tm_isdst = -1;
+#else
+    tm.tm_isdst = 0;
+#endif
 
     tm.tm_year = ((ddate >> 9) & 127) + 1980 - 1900;
     tm.tm_mon = ((ddate >> 5) & 15) - 1;
@@ -995,7 +1000,13 @@ _zip_d2u_time(zip_uint16_t dtime, zip_uint16_t ddate) {
     tm.tm_min = (dtime >> 5) & 63;
     tm.tm_sec = (dtime << 1) & 62;
 
-    return mktime(&tm);
+    time_t utime = mktime(&tm);
+
+#ifndef ENABLE_LOCALTIME
+	utime -= timezone;
+#endif
+
+	return utime;
 }
 
 
@@ -1068,12 +1079,22 @@ void
 _zip_u2d_time(time_t intime, zip_uint16_t *dtime, zip_uint16_t *ddate) {
     struct tm *tpm;
 
+#ifdef ENABLE_LOCALTIME
 #ifdef HAVE_LOCALTIME_R
     struct tm tm;
     tpm = localtime_r(&intime, &tm);
 #else
     tpm = localtime(&intime);
 #endif
+#else
+#ifdef HAVE_GMTIME_R
+    struct tm tm;
+    tpm = gmtime_r(&intime, &tm);
+#else
+    tpm = gmtime(&intime);
+#endif
+#endif
+
     if (tpm == NULL) {
         /* if localtime() fails, return an arbitrary date (1980-01-01 00:00:00) */
 	*ddate = (1 << 5) + 1;
