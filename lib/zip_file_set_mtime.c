@@ -46,6 +46,15 @@ zip_file_set_mtime(zip_t *za, zip_uint64_t idx, time_t mtime, zip_flags_t flags)
 	return -1;
     }
 
+    if (ZIP_ENTRY_DATA_CHANGED(za->entry + idx)) {
+		if (zip_source_set_mtime(za->entry[idx].source, mtime) < 0) {
+		    zip_error_set(&za->error, ZIP_ER_CHANGED, 0);
+	    	return -1;
+		} else {
+            return 0;
+        }
+    }
+
     e = za->entry + idx;
 
     changed = e->orig == NULL || mtime != e->orig->last_mod;

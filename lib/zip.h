@@ -231,7 +231,8 @@ enum zip_source_cmd {
     ZIP_SOURCE_REMOVE,                /* remove file */
     ZIP_SOURCE_GET_COMPRESSION_FLAGS, /* get compression flags, internal only */
     ZIP_SOURCE_BEGIN_WRITE_CLONING,   /* like ZIP_SOURCE_BEGIN_WRITE, but keep part of original file */
-    ZIP_SOURCE_ACCEPT_EMPTY           /* whether empty files are valid archives */
+    ZIP_SOURCE_ACCEPT_EMPTY,          /* whether empty files are valid archives */
+    ZIP_SOURCE_SET_MTIME              /* set the source mtime */
 };
 typedef enum zip_source_cmd zip_source_cmd_t;
 
@@ -424,6 +425,7 @@ ZIP_EXTERN void zip_source_rollback_write(zip_source_t * _Nonnull);
 ZIP_EXTERN int zip_source_seek(zip_source_t * _Nonnull, zip_int64_t, int);
 ZIP_EXTERN zip_int64_t zip_source_seek_compute_offset(zip_uint64_t, zip_uint64_t, void * _Nonnull, zip_uint64_t, zip_error_t * _Nullable);
 ZIP_EXTERN int zip_source_seek_write(zip_source_t * _Nonnull, zip_int64_t, int);
+ZIP_EXTERN int zip_source_set_mtime(zip_source_t * _Nonnull, time_t mtime);
 ZIP_EXTERN int zip_source_stat(zip_source_t * _Nonnull, zip_stat_t * _Nonnull);
 ZIP_EXTERN zip_int64_t zip_source_tell(zip_source_t * _Nonnull);
 ZIP_EXTERN zip_int64_t zip_source_tell_write(zip_source_t * _Nonnull);

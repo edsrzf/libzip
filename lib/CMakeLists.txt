@@ -142,6 +142,7 @@ SET(LIBZIP_SOURCES
   zip_source_rollback_write.c
   zip_source_seek.c
   zip_source_seek_write.c
+  zip_source_set_mtime.c
   zip_source_stat.c
   zip_source_supports.c
   zip_source_tell.c
