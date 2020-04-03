@@ -1000,13 +1000,11 @@ _zip_d2u_time(zip_uint16_t dtime, zip_uint16_t ddate) {
     tm.tm_min = (dtime >> 5) & 63;
     tm.tm_sec = (dtime << 1) & 62;
 
-    time_t utime = mktime(&tm);
-
-#ifndef ENABLE_LOCALTIME
-	utime -= timezone;
+#ifdef ENABLE_LOCALTIME
+    return mktime(&tm);
+#else
+    return timegm(&tm);
 #endif
-
-	return utime;
 }
 
 
