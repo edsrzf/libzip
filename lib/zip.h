@@ -447,6 +447,8 @@ ZIP_EXTERN int zip_unchange(zip_t * _Nonnull, zip_uint64_t);
 ZIP_EXTERN int zip_unchange_all(zip_t * _Nonnull);
 ZIP_EXTERN int zip_unchange_archive(zip_t * _Nonnull);
 
+ZIP_EXTERN int zip_ext_count_symlinks(zip_t * _Nonnull);
+
 #ifdef __cplusplus
 }
 #endif
