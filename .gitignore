@@ -5,3 +5,6 @@
 *~
 *.tar.gz
 *.tar.xz
+/.clangd
+/compile_commands.json
+/cmake-build-debug
